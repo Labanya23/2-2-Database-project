@@ -1,0 +1,126 @@
+//GROUP WORK
+Structure the table-----
+CREATE TABLE Manufacturer (
+    manufacturer_id INT PRIMARY KEY,
+    manufacturer_name VARCHAR(100),
+    manufacturer_address VARCHAR(255),
+    manufacturer_contact VARCHAR(11)
+);
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    customer_gender CHAR(1),
+    customer_contact VARCHAR(11),
+    customer_address VARCHAR(255)
+);
+
+CREATE TABLE Medicine (
+    medicine_id INT PRIMARY KEY,
+    medicine_name VARCHAR(100),
+    medicine_type VARCHAR(100),
+    medicine_quantity INT,
+    medicine_price DECIMAL(10, 2),
+    expiry_date DATE,
+    manufacturer_id INT,
+    FOREIGN KEY (manufacturer_id) REFERENCES Manufacturer(manufacturer_id)
+);
+
+CREATE TABLE Pharmacy (
+    pharmacy_id INT PRIMARY KEY,
+    pharmacy_name VARCHAR(100),
+    pharmacy_address VARCHAR(255),
+    pharmacy_contact VARCHAR(11),
+    manufacturer_id INT,
+    FOREIGN KEY (manufacturer_id) REFERENCES Manufacturer(manufacturer_id)
+);
+
+CREATE TABLE Prescription (
+    prescription_id INT PRIMARY KEY,
+    customer_id INT,
+    patient_name VARCHAR(100),
+    medicine_name VARCHAR(100),
+    quantity INT,
+    prescription_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+CREATE TABLE Counter (
+    counter_id INT PRIMARY KEY,
+    employee_id INT,
+    pharmacy_id INT,
+    pharmacy_name VARCHAR(100),
+    customer_id INT,
+    medicine_id INT,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+    FOREIGN KEY (pharmacy_id) REFERENCES Pharmacy(pharmacy_id),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (medicine_id) REFERENCES Medicine(medicine_id)
+);
+
+CREATE TABLE Employee (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(100),
+    employee_shift VARCHAR(50),
+    job_title VARCHAR(100),
+    counter_id INT,
+    FOREIGN KEY (counter_id) REFERENCES Counter(counter_id)
+);
+
+---------
+DATA ENTRY
+INSERT INTO Manufacturer (manufacturer_id, manufacturer_name, manufacturer_address, manufacturer_contact)
+VALUES
+(1, 'Bengal Pharma', '123 Pharma Road, Dhaka, Bangladesh', '01987234765'),
+(2, 'HealthCare Bangladesh', '456 Pharma Lane, Chittagong, Bangladesh', '01987234763'),
+(3, 'Dhaka Pharmaceuticals', '789 Pharma Avenue, Dhaka, Bangladesh', '01987234764'),
+(4, 'Green Pharmaceuticals', '101 Pharma Street, Khulna, Bangladesh', '01987234769'),
+(5, 'Sylhet Pharma', '555 Pharma Park, Sylhet, Bangladesh', '01987234766');
+
+INSERT INTO Customers (customer_id, customer_name, customer_gender, customer_contact, customer_address)
+VALUES
+(1, 'Saumoon', 'F', '01712345678', '123 Elm Street, Dhaka, Bangladesh'),
+(2, 'Jannat', 'F', '01812345678', '456 Oak Lane, Chittagong, Bangladesh'),
+(3, 'Labanya', 'F', '01912345678', '789 Maple Avenue, Dhaka, Bangladesh'),
+(4, 'Saha', 'F', '01901234567', '101 Pine Road, Khulna, Bangladesh'),
+(5, 'Amin', 'M', '01901234562', '555 Cedar Park, Sylhet, Bangladesh');
+
+INSERT INTO Medicine (medicine_id, medicine_name, medicine_type, medicine_quantity, medicine_price, expiry_date, manufacturer_id)
+VALUES
+(1, 'Medicine A', 'Tablet', 100, 599, '2023-12-31', 1),
+(2, 'Medicine B', 'Capsule', 80, 849, '2024-05-31', 2),
+(3, 'Medicine C', 'Syrup', 50, 499, '2023-09-30', 1),
+(4, 'Medicine D', 'Ointment', 75, 699, '2024-02-28', 3),
+(5, 'Medicine E', 'Tablet', 90, 999, '2024-04-30', 2);
+
+INSERT INTO Pharmacy (pharmacy_id, pharmacy_name, pharmacy_address, pharmacy_contact, manufacturer_id)
+VALUES
+(1, 'Dhaka Pharmacy', '123 Main Road, Dhaka, Bangladesh', '01877826371', 1),
+(2, 'Chittagong Pharmacy', '456 Elm Street, Chittagong, Bangladesh', '01877826372', 2),
+(3, 'Khulna Pharmacy', '789 Oak Lane, Khulna, Bangladesh', '01877826373', 1),
+(4, 'Jessore Pharmacy', '101 Palm Avenue, Jessore, Bangladesh', '01877826374', 3),
+(5, 'Sylhet Pharmacy', '555 Maple Street, Sylhet, Bangladesh', '01877826375', 2);
+
+INSERT INTO Prescription (prescription_id, customer_id, patient_name, medicine_name, quantity, prescription_date)
+VALUES
+(1, 1, 'Patient 1', 'Medicine A', 3, '2023-10-01'),
+(2, 2, 'Patient 2', 'Medicine B', 2, '2023-10-02'),
+(3, 3, 'Patient 3', 'Medicine C', 1, '2023-10-03'),
+(4, 4, 'Patient 4', 'Medicine A', 4, '2023-10-04'),
+(5, 5, 'Patient 5', 'Medicine B', 2, '2023-10-05');
+
+INSERT INTO Employee (employee_id, employee_name, employee_shift, job_title, counter_id)
+VALUES
+(1, 'Paria Chowdhury', 'Day Shift', 'Pharmacy Assistant', 1),
+(2, 'Al Amin', 'Night Shift', 'Pharmacist', 2),
+(3, 'Sourav', 'Day Shift', 'Sales Associate', 3),
+(4, 'Nadia Rahman', 'Night Shift', 'Pharmacist', 4),
+(5, 'Kamal Ahmed', 'Day Shift', 'Pharmacy Assistant', 5);
+
+INSERT INTO Counter (counter_id, employee_id, pharmacy_id, pharmacy_name, customer_id, medicine_id)
+VALUES
+(1, 1, 1, 'Dhaka Pharmacy', 1, 1),
+(2, 2, 2, 'Chittagong Pharmacy', 2, 2),
+(3, 3, 3, 'Khulna Pharmacy', 3, 3),
+(4, 4, 4, 'Jessore Pharmacy', 4, 4),
+(5, 5, 5, 'Sylhet Pharmacy', 5, 5);
